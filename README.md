@@ -8,22 +8,81 @@ To write a program to predict the profit of a city using the linear regression m
 2. Anaconda – Python 3.7 Installation / Jupyter notebook
 
 ## Algorithm
-1. 
-2. 
-3. 
-4. 
+1. Import the required Python libraries.
+2. Load the dataset and select the input (R&D Spend) and output (Profit) variables.
+3. Initialize the slope, intercept, learning rate, and number of iterations.
+4. Apply Gradient Descent to update the slope and intercept until convergence.
+5. Display the regression line and predicted output.
 
 ## Program:
 ```
 /*
 Program to implement the linear regression using gradient descent.
-Developed by: 
-RegisterNumber:  
+Developed by: MANIYARASAN R
+RegisterNumber: 212224040185
 */
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+#Load the Data
+data=pd.read_csv("/content/exp_3_50_Startups.csv")
+x=data["R&D Spend"].values
+y=data["Profit"].values
+
+#Feature Scaling
+x_mean=np.mean(x)
+x_std=np.std(x)
+x=(x-x_mean)/x_std
+
+#Parameters
+w=0.0
+b=0.0
+alpha=0.01
+epochs=100
+n=len(x)
+
+losses=[]
+
+#Gradient Descent
+for i in range(epochs):
+    y_hat=w*x+b
+    loss=np.mean((y_hat-y)**2)
+    losses.append(loss)
+
+    dw=(2/n)*np.sum((y_hat-y)*x)
+    db=(2/n)*np.sum(y_hat-y)
+
+    w-=alpha*dw
+    b-=alpha*db
+
+#Plot
+plt.figure(figsize=(12,5))
+
+plt.subplot(1,2,1)
+plt.plot(losses)
+plt.xlabel("Iterations")
+plt.ylabel("Loss(MSE)")
+plt.title("Loss vs Iterations")
+
+plt.subplot(1,2,2)
+plt.scatter(x,y)
+x_sorted=np.argsort(x)
+plt.plot(x[x_sorted],(w*x+b)[x_sorted],color="red")
+plt.xlabel("R&D Spend (scaled)")
+plt.ylabel("Profit")
+plt.title("Linear Regression Fit")
+
+plt.tight_layout()
+plt.show()
+
+print(f"Final weight (w): {w}")
+print(f"Final bias (b): {b}")
 ```
 
 ## Output:
-![linear regression using gradient descent](sam.png)
+
+<img width="1532" height="678" alt="Screenshot 2026-07-24 084204" src="https://github.com/user-attachments/assets/be289d39-b3f7-4e21-a639-0d22743ceec2" />
 
 
 ## Result:
